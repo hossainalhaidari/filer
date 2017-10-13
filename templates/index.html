@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row menu">
+        <div class="ten columns">
+            <input type="text" id="path" style="width: 100%" />
+        </div>
+        <div class="two columns">
+            <input type="button" id="open" value="Go" />
+        </div>
+    </div>
+
+    <div class="row menu">
+        <div class="two columns">
+            <a href="#" id="newfile">New File</a>
+        </div>
+        <div class="two columns">
+            <a href="#" id="newdir">New Dir</a>
+        </div>
+        <div class="two columns">
+            <a href="#" id="compress">Compress</a>
+        </div>
+        <div class="two columns">
+            <a href="#" id="extract">Extract</a>
+        </div>
+    </div>
+
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Modified</th>
+            </tr>
+        </thead>
+        <tbody id="filelist">
+        </tbody>
+    </table>
+
+    <input type="hidden" id="curdir" value="{{ curdir }}" />
+
+    <script>
+        function open(path)
+        {
+            $.ajax({
+                url: '/ajax/files/'+path,
+                success: function (data) {
+                    $("#filelist").html(data);
+                    $("#path").val(path);
+                }
+            });
+        }
+
+        $("body").on("click", "#open", function() {
+            var path = $("#path").val();
+            open(path);
+        });
+
+        $("body").on("click", "#newfile", function() {
+            var path = $("#path").val();
+            $.ajax({
+                url: '/ajax/newfile/'+path,
+                success: function (data) {
+                }
+            });
+        });
+
+        $("body").on("click", "#newdir", function() {
+            var path = $("#path").val();
+            $.ajax({
+                url: '/ajax/newdir/'+path,
+                success: function (data) {
+                }
+            });
+        });
+
+        $("body").on("click", "#compress", function() {
+            var path = $("#path").val();
+            $.ajax({
+                url: '/ajax/newdir/'+path,
+                success: function (data) {
+                }
+            });
+        });
+
+        $("body").on("click", ".file", function() {
+            $(this).toggleClass("selected");
+        });
+
+        $("body").on("dblclick", ".file", function() {
+            var path = $(this).data("path");
+            open(path);
+        });
+    </script>
+{% endblock %}

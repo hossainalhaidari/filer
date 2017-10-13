@@ -1,0 +1,12 @@
+<tr class="file" data-path="{{ curdir }}">
+    <td colspan="4">..</td>
+</tr>
+
+{% for file in files %}
+    <tr class="file" data-path="{{ file.path }}">
+        <td>{{ file.name }}</td>
+        <td>{{ file.type }}</td>
+        <td>{{ file.size }}</td>
+        <td>{{ file.mtime }}</td>
+    </tr>
+{% endfor %}
