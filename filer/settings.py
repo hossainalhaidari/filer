@@ -109,8 +109,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 STATICFILES_DIRS = [
-    '/home/hossain/WWW/filer/static/',
+    os.path.join(BASE_DIR, "static")
 ]
+
+DEFAULT_PATH = '~'

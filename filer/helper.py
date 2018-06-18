@@ -1,4 +1,4 @@
-import os, zipfile, math, time
+import os, zipfile, math, time, base64
 
 class Files:
 
@@ -24,11 +24,24 @@ class Files:
 	def list(self, dir):
 		data = []
 		dir = self.getPath(dir)
-		files = os.listdir(dir)
+		files = sorted(os.listdir(dir))
+
+		for folder in files:
+			fullpath = os.path.join(dir, folder)
+			if os.path.isfile(fullpath) or (folder != ".." and folder.startswith(".")):
+				continue
+			
+			type = 'Folder'
+			size = self.getSize(fullpath)
+			mtime = time.ctime(os.path.getmtime(fullpath))
+			data.append({'name': folder, 'type': type, 'path': fullpath, 'size': size, 'mtime': mtime})
 
 		for file in files:
 			fullpath = os.path.join(dir, file)
-			type = 'File' if os.path.isfile(fullpath) else 'Folder'
+			if os.path.isfile(fullpath) == False or file.startswith("."):
+				continue
+			
+			type = 'File'
 			size = self.getSize(fullpath)
 			mtime = time.ctime(os.path.getmtime(fullpath))
 			data.append({'name': file, 'type': type, 'path': fullpath, 'size': size, 'mtime': mtime})
@@ -39,9 +52,11 @@ class Files:
 		return os.path.abspath(os.path.join(file, os.pardir))
 
 	def newfile(self, path):
-		open(path, 'a')
+		path = base64.b64decode(path)
+		open(path, 'w+')
 
 	def newdir(self, path):
+		path = base64.b64decode(path)
 		if not os.path.exists(path):
 			os.makedirs(path)
 
@@ -52,6 +67,7 @@ class Files:
 		zipf.close()
 
 	def unzip(self, file, dir):
-		zip_ref = zipfile.ZipFile(self.getPath(file), 'r')
-		zip_ref.extractall(self.getPath(dir))
+		file = base64.b64decode(file)
+		zip_ref = zipfile.ZipFile(file, 'r')
+		zip_ref.extractall(dir)
 		zip_ref.close()

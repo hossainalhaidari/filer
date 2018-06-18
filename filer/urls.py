@@ -11,7 +11,7 @@ urlpatterns = [
 	url(r'^ajax/files/(?P<dir>.*)/$', views.files, name='files'),
 	url(r'^ajax/newfile/(?P<path>.*)/$', views.newfile, name='newfile'),
 	url(r'^ajax/newdir/(?P<path>.*)/$', views.newdir, name='newdir'),
-	url(r'^ajax/zip/(?P<files>.*)/$', views.zip, name='zip'),
+	url(r'^ajax/zip/(?P<file>.*)/$', views.zip, name='zip'),
 	url(r'^ajax/unzip/(?P<file>.*)/$', views.unzip, name='unzip'),
     url(r'^admin/', admin.site.urls),
 ]

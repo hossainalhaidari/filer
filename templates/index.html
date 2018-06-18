@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row menu">
         <div class="ten columns">
-            <input type="text" id="path" style="width: 100%" />
+            <input type="text" id="path" value="{{ curdir }}" style="width: 100%" />
         </div>
         <div class="two columns">
             <input type="button" id="open" value="Go" />
@@ -28,6 +28,7 @@
     <table class="u-full-width">
         <thead>
             <tr>
+                <th>@</th>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Size</th>
@@ -37,8 +38,6 @@
         <tbody id="filelist">
         </tbody>
     </table>
-
-    <input type="hidden" id="curdir" value="{{ curdir }}" />
 
     <script>
         function open(path)
@@ -52,36 +51,66 @@
             });
         }
 
+        $("#path").keypress(function() {
+            if ( event.which == 13 ) {
+                event.preventDefault();
+                open($(this).val());
+            }
+        });
+
         $("body").on("click", "#open", function() {
             var path = $("#path").val();
             open(path);
         });
 
         $("body").on("click", "#newfile", function() {
-            var path = $("#path").val();
-            $.ajax({
-                url: '/ajax/newfile/'+path,
-                success: function (data) {
-                }
-            });
+            var path = prompt("Please enter the file name.", "");
+            if (path != null && path != "") {
+                path = $("#curdir").val() + '/' + path
+                $.ajax({
+                    url: '/ajax/newfile/'+btoa(path),
+                    success: function (data) {
+                    }
+                });
+            }
         });
 
         $("body").on("click", "#newdir", function() {
-            var path = $("#path").val();
-            $.ajax({
-                url: '/ajax/newdir/'+path,
-                success: function (data) {
-                }
-            });
+            var path = prompt("Please enter the folder name.", "");
+            if (path != null && path != "") {
+                path = $("#curdir").val() + '/' + path
+                $.ajax({
+                    url: '/ajax/newdir/'+btoa(path),
+                    success: function (data) {
+                    }
+                });
+            }
         });
 
         $("body").on("click", "#compress", function() {
-            var path = $("#path").val();
-            $.ajax({
-                url: '/ajax/newdir/'+path,
-                success: function (data) {
-                }
+            $("#filelist .selected").each(function() {
+                console.log($(this).find(".filename").html());
             });
+            if (path != null && path != "") {
+                $.ajax({
+                    url: '/ajax/zip/'+path,
+                    success: function (data) {
+                    }
+                });
+            }
+        });
+
+        $("body").on("click", "#extract", function() {
+            var file = $("#filelist .selected").first().find(".filename").html();
+
+            if(file != null) {
+                path = $("#curdir").val() + '/' + file
+                $.ajax({
+                    url: '/ajax/unzip/'+btoa(path),
+                    success: function (data) {
+                    }
+                });
+            }
         });
 
         $("body").on("click", ".file", function() {
@@ -92,5 +121,7 @@
             var path = $(this).data("path");
             open(path);
         });
+
+        open('{{ curdir }}');
     </script>
 {% endblock %}
