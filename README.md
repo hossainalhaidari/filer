@@ -14,6 +14,6 @@ Minimal file manager built with Go and TypeScript.
 - [x] Move Files/Dirs
 - [x] Change Files/Dirs Mode
 - [x] Upload Files
-- [ ] Download Files
+- [x] Download Files
 - [ ] Zip Files/Dirs
 - [x] Unzip Files

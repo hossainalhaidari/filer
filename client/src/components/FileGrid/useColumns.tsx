@@ -90,6 +90,20 @@ export const useColumns = () => {
     );
   };
 
+  const downloadFile = async (file: File) => {
+    setLoading(true);
+    const res = await downloadApi(file);
+    const href = URL.createObjectURL(res);
+    const link = document.createElement("a");
+    link.href = href;
+    link.setAttribute("download", file.name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+    setLoading(false);
+  };
+
   return [
     {
       field: "name",
@@ -159,9 +173,7 @@ export const useColumns = () => {
                 aria-label="Download"
                 onClick={async (e) => {
                   e.stopPropagation();
-                  setLoading(true);
-                  await downloadApi(file);
-                  setLoading(false);
+                  await downloadFile(file);
                 }}
               >
                 <DownloadIcon />

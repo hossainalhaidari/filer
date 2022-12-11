@@ -1,4 +1,4 @@
-import { Breadcrumbs, Link } from "@mui/material";
+import { Breadcrumbs, Button } from "@mui/material";
 
 import { useAppContext } from "~/stores";
 
@@ -8,15 +8,15 @@ export const PathBar = () => {
   return (
     <Breadcrumbs aria-label="Path Bar">
       {paths.map((path, index) => (
-        <Link
+        <Button
           key={index}
-          underline="hover"
+          variant="text"
+          size="small"
           color="inherit"
-          href={`#${path}`}
           onClick={() => setPaths(paths.slice(0, index + 1))}
         >
           {path === "" ? "Home" : path}
-        </Link>
+        </Button>
       ))}
     </Breadcrumbs>
   );

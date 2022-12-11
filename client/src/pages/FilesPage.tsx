@@ -23,6 +23,7 @@ import { useAppContext, useAuthContext } from "~/stores";
 import { FileGrid, PathBar } from "~/components";
 import { clearToken, getServer, getUser } from "~/utils/storage";
 import { AuthStatus } from "~/utils/types";
+import { grey } from "@mui/material/colors";
 
 export const FilesPage = () => {
   const { setAuthStatus } = useAuthContext();
@@ -61,6 +62,7 @@ export const FilesPage = () => {
             variant="body2"
             noWrap
             component="div"
+            color={grey[400]}
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             {`${getUser()} @ ${getServer()}`}

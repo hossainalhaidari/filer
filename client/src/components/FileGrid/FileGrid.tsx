@@ -82,7 +82,7 @@ export const FileGrid = () => {
   };
 
   return (
-    <div style={{ height: 600, width: "100%", marginTop: "1rem" }}>
+    <div style={{ height: 600, width: "100%", marginTop: 10 }}>
       <DataGrid
         rows={files}
         columns={columns}
