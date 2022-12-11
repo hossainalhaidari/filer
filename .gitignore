@@ -1,4 +1,5 @@
-__pycache__/
-*.py[cod]
-static/admin/js/vendor/
-static/admin/css/vendor/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.local
+TODO.md
