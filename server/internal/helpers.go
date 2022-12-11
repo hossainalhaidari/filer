@@ -2,6 +2,7 @@ package internal
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -20,6 +21,14 @@ func joinPath(path string) string {
 
 func joinFilePath(file File) string {
 	return filepath.Join(BaseDir, strings.ReplaceAll(file.Path, "..", ""), file.Name)
+}
+
+func AuthExists() bool {
+	if _, err := os.Stat(".htpasswd"); err == nil {
+		return true
+	}
+
+	return false
 }
 
 func isAuthorized(username string, password string) bool {

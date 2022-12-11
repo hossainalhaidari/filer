@@ -9,13 +9,20 @@ import { FormEvent, useState } from "react";
 import { Alert, AlertTitle, InputAdornment } from "@mui/material";
 import {
   AccountCircle as UsernameIcon,
+  Dns as ServerIcon,
   Key as PasswordIcon,
 } from "@mui/icons-material";
 
 import { loginApi } from "~/api";
 import { useAuthContext } from "~/stores";
 import { AuthStatus } from "~/utils/types";
-import { setToken } from "~/utils/storage";
+import {
+  getServer,
+  getUser,
+  setServer,
+  setToken,
+  setUser,
+} from "~/utils/storage";
 
 export const LoginPage = () => {
   const { setAuthStatus } = useAuthContext();
@@ -25,17 +32,22 @@ export const LoginPage = () => {
   const onLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setError(false);
-    setLoading(true);
-
     const data = new FormData(event.currentTarget);
+    const server = data.get("server")?.toString() ?? "";
     const username = data.get("username")?.toString() ?? "";
     const password = data.get("password")?.toString() ?? "";
+
+    if (server === "" || username === "" || password === "") return;
+
+    setServer(server);
+    setError(false);
+    setLoading(true);
 
     try {
       const res = await loginApi(username, password);
 
       if (res) {
+        setUser(username);
         setToken(res.token);
         setAuthStatus(AuthStatus.AUTHORIZED);
       } else {
@@ -69,10 +81,28 @@ export const LoginPage = () => {
             margin="normal"
             required
             fullWidth
+            id="server"
+            label="Server"
+            name="server"
+            autoComplete="server"
+            defaultValue={getServer()}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ServerIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="username"
             label="Username"
             name="username"
             autoComplete="username"
+            defaultValue={getUser()}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

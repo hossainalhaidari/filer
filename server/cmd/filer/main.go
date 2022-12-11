@@ -15,6 +15,10 @@ func main() {
 		log.Fatal("Root directory was not specified!")
 	}
 
+	if !internal.AuthExists() {
+		log.Fatal(".htpasswd was not found!")
+	}
+
 	internal.SetBaseDir(args[0])
 
 	e := echo.New()

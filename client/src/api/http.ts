@@ -1,15 +1,13 @@
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from "axios";
 
-import { getToken } from "~/utils/storage";
-
-const API_HOST = import.meta.env.VITE_API_HOST;
+import { getServer, getToken } from "~/utils/storage";
 
 export const get = async (
   endpoint: string,
   withToken = true,
   config?: AxiosRequestConfig
 ) => {
-  const res = await axios.get(API_HOST + endpoint, {
+  const res = await axios.get(getServer() + endpoint, {
     ...config,
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +23,7 @@ export const post = async (
   withToken = true,
   config?: AxiosRequestConfig
 ) => {
-  const res = await axios.post(API_HOST + endpoint, data, {
+  const res = await axios.post(getServer() + endpoint, data, {
     ...config,
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +44,7 @@ export const upload = async (
   formData.append("outputPath", outputPath);
   [...files].forEach((file) => formData.append("files", file));
 
-  const res = await axios.post(API_HOST + endpoint, formData, {
+  const res = await axios.post(getServer() + endpoint, formData, {
     ...config,
     headers: {
       "Content-Type": "multipart/form-data",

@@ -21,7 +21,7 @@ import {
 } from "~/components/Dialog";
 import { useAppContext, useAuthContext } from "~/stores";
 import { FileGrid, PathBar } from "~/components";
-import { clearToken } from "~/utils/storage";
+import { clearToken, getServer, getUser } from "~/utils/storage";
 import { AuthStatus } from "~/utils/types";
 
 export const FilesPage = () => {
@@ -57,7 +57,15 @@ export const FilesPage = () => {
             Filer
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
+            {`${getUser()} @ ${getServer()}`}
+          </Typography>
+          <Box sx={{ marginLeft: 2, display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
               aria-label="Logout"
