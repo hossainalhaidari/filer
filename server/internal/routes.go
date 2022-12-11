@@ -18,7 +18,7 @@ func Login(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 
-	if !userExists(req.Username, req.Password) {
+	if !isAuthorized(req.Username, req.Password) {
 		return echo.ErrUnauthorized
 	}
 

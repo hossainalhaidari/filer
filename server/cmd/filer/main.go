@@ -1,13 +1,21 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/hossainalhaidari/filer/internal"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	internal.LoadEnv()
+	args := os.Args[1:]
+	if len(args) < 1 {
+		log.Fatal("Root directory was not specified!")
+	}
+
+	internal.SetBaseDir(args[0])
 
 	e := echo.New()
 	e.Use(middleware.CORS())
@@ -34,5 +42,5 @@ func main() {
 	r.POST("compress", internal.Compress)
 	r.POST("extract", internal.Extract)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":80"))
 }

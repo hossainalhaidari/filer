@@ -1,17 +1,32 @@
 package internal
 
 import (
+	"log"
 	"path/filepath"
+	"strings"
+
+	"github.com/tg123/go-htpasswd"
 )
 
-func getBaseDir() string {
-	return getEnv(BaseDirKey)
+var BaseDir = ""
+
+func SetBaseDir(baseDir string) {
+	BaseDir = baseDir
 }
 
 func joinPath(path string) string {
-	return filepath.Join(getBaseDir(), path)
+	return filepath.Join(BaseDir, strings.ReplaceAll(path, "..", ""))
 }
 
 func joinFilePath(file File) string {
-	return filepath.Join(getBaseDir(), file.Path, file.Name)
+	return filepath.Join(BaseDir, strings.ReplaceAll(file.Path, "..", ""), file.Name)
+}
+
+func isAuthorized(username string, password string) bool {
+	auth, err := htpasswd.New(".htpasswd", htpasswd.DefaultSystems, nil)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	return auth.Match(username, password)
 }
