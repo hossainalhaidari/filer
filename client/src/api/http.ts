@@ -48,7 +48,7 @@ export const upload = async (
     ...config,
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: getToken(),
+      Authorization: `Bearer ${getToken()}`,
     },
     onUploadProgress,
   });
