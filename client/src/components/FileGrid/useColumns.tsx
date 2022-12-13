@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import {
+  Brush as GraphicIcon,
   DataArray as BinaryIcon,
   Description as DocumentIcon,
   Download as DownloadIcon,
@@ -14,7 +15,7 @@ import {
   Folder as FolderIcon,
   FolderZip as ArchiveIcon,
   Image as ImageIcon,
-  MusicNote as MusicIcon,
+  MusicNote as AudioIcon,
   Shield as ModeIcon,
   Subject as TextIcon,
   Unarchive as UnarchiveIcon,
@@ -51,9 +52,10 @@ export const useColumns = () => {
         case MimeType.Text:
           openFileDialog();
           break;
+        case MimeType.Audio:
         case MimeType.Document:
+        case MimeType.Graphic:
         case MimeType.Image:
-        case MimeType.Music:
         case MimeType.Video:
         default:
           break;
@@ -69,12 +71,14 @@ export const useColumns = () => {
       switch (mimeType) {
         case MimeType.Archive:
           return <ArchiveIcon />;
+        case MimeType.Audio:
+          return <AudioIcon />;
         case MimeType.Document:
           return <DocumentIcon />;
+        case MimeType.Graphic:
+          return <GraphicIcon />;
         case MimeType.Image:
           return <ImageIcon />;
-        case MimeType.Music:
-          return <MusicIcon />;
         case MimeType.Text:
           return <TextIcon />;
         case MimeType.Video:
