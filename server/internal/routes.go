@@ -23,12 +23,13 @@ func Login(c echo.Context) error {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
-		jwt.StandardClaims{
+		Username: req.Username,
+		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},
 	})
 
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte(JwtKey))
 	if err != nil {
 		return err
 	}

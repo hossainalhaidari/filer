@@ -21,6 +21,7 @@ func main() {
 	}
 
 	internal.SetBaseDir(args[0])
+	internal.GenerateJwtKey()
 
 	e := echo.New()
 	e.AutoTLSManager.Cache = autocert.DirCache("cache")
@@ -32,7 +33,7 @@ func main() {
 	r := e.Group("/")
 	config := middleware.JWTConfig{
 		Claims:     &internal.Claims{},
-		SigningKey: []byte("secret"),
+		SigningKey: []byte(internal.JwtKey),
 	}
 	r.Use(middleware.JWTWithConfig(config))
 

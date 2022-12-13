@@ -6,13 +6,19 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/dchest/uniuri"
 	"github.com/tg123/go-htpasswd"
 )
 
 var BaseDir = ""
+var JwtKey = ""
 
 func SetBaseDir(baseDir string) {
 	BaseDir = baseDir
+}
+
+func GenerateJwtKey() {
+	JwtKey = uniuri.NewLen(64)
 }
 
 func joinPath(path string) string {
