@@ -1,8 +1,11 @@
 import {
+  Alert,
+  AlertTitle,
   AppBar,
   Box,
   Container,
   IconButton,
+  Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -27,7 +30,7 @@ import { grey } from "@mui/material/colors";
 
 export const FilesPage = () => {
   const { setAuthStatus } = useAuthContext();
-  const { paths, refresh } = useAppContext();
+  const { paths, refresh, error, setError } = useAppContext();
 
   const onLogout = () => {
     clearToken();
@@ -93,6 +96,18 @@ export const FilesPage = () => {
         <NewFolderDialog />
         <RenameDialog />
       </Container>
+
+      <Snackbar
+        open={error != null}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClose={() => setError(null)}
+      >
+        <Alert onClose={() => setError(null)} severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

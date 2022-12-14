@@ -11,12 +11,14 @@ import { deleteApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const DeleteDialog = () => {
-  const { loading, setLoading, selectedFiles, refresh } = useAppContext();
+  const { loading, setLoading, selectedFiles, refresh, setError } =
+    useAppContext();
   const { deleteDialog, closeDeleteDialog } = useDialog();
 
   const onDelete = async () => {
     if (selectedFiles.length === 0) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await deleteApi(selectedFiles);
@@ -24,6 +26,8 @@ export const DeleteDialog = () => {
     if (res) {
       closeDeleteDialog();
       refresh();
+    } else {
+      setError("Cannot delete item(s). Please try again.");
     }
 
     setLoading(false);

@@ -19,7 +19,8 @@ import { useAppContext, useDialog } from "~/stores";
 import { modeToNumber } from "~/utils/helpers";
 
 export const ModeDialog = () => {
-  const { loading, setLoading, selectedFiles, refresh } = useAppContext();
+  const { loading, setLoading, selectedFiles, refresh, setError } =
+    useAppContext();
   const { modeDialog, closeModeDialog } = useDialog();
   const [ownerMode, setOwnerMode] = useState(0);
   const [groupMode, setGroupMode] = useState(0);
@@ -40,6 +41,7 @@ export const ModeDialog = () => {
   const onChange = async () => {
     if (selectedFiles.length === 0) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await chmodApi(
@@ -50,6 +52,8 @@ export const ModeDialog = () => {
     if (res) {
       closeModeDialog();
       refresh();
+    } else {
+      setError("Cannot change mode. Please try again.");
     }
 
     setLoading(false);

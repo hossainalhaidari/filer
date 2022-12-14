@@ -13,7 +13,7 @@ import { createApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const NewFileDialog = () => {
-  const { loading, setLoading, newFile, refresh } = useAppContext();
+  const { loading, setLoading, newFile, refresh, setError } = useAppContext();
   const { newFileDialog, closeNewFileDialog } = useDialog();
   const [name, setName] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -21,6 +21,7 @@ export const NewFileDialog = () => {
   const onCreate = async () => {
     if (!name) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await createApi(newFile(name));
@@ -28,6 +29,8 @@ export const NewFileDialog = () => {
     if (res) {
       closeNewFileDialog();
       refresh();
+    } else {
+      setError("Cannot create a new file. Please try again.");
     }
 
     setLoading(false);

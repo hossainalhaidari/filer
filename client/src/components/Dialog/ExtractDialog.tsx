@@ -13,7 +13,8 @@ import { extractApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const ExtractDialog = () => {
-  const { getFile, joinCwd, loading, setLoading, refresh } = useAppContext();
+  const { getFile, joinCwd, loading, setLoading, refresh, setError } =
+    useAppContext();
   const { extractDialog, closeExtractDialog } = useDialog();
   const file = getFile();
   const [name, setName] = useState("");
@@ -31,6 +32,7 @@ export const ExtractDialog = () => {
   const onExtract = async () => {
     if (file == null || !name) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await extractApi(file, joinCwd(name));
@@ -38,6 +40,8 @@ export const ExtractDialog = () => {
     if (res) {
       closeExtractDialog();
       refresh();
+    } else {
+      setError("Cannot extract files. Please try again.");
     }
 
     setLoading(false);

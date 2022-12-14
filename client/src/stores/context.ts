@@ -27,6 +27,8 @@ interface AppContext {
   loading: boolean;
   setLoading: (loading: boolean) => void;
 
+  error: string | null;
+  setError: (error: string | null) => void;
   refresh: () => void;
 
   newFile: (name?: string) => File;
@@ -69,6 +71,8 @@ export const useAppContext = create<AppContext>((set, get) => ({
       set((state) => ({ ...state, files, loading: false }));
     });
   },
+  error: null,
+  setError: (error: string | null) => set((state) => ({ ...state, error })),
 
   newFile: (name = ""): File => ({
     name,

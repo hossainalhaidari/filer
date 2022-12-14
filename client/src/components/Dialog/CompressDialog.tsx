@@ -13,7 +13,7 @@ import { compressApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const CompressDialog = () => {
-  const { joinCwd, loading, setLoading, selectedFiles, refresh } =
+  const { joinCwd, loading, setLoading, selectedFiles, refresh, setError } =
     useAppContext();
   const { compressDialog, closeCompressDialog } = useDialog();
   const [name, setName] = useState("");
@@ -31,6 +31,7 @@ export const CompressDialog = () => {
   const onCompress = async () => {
     if (selectedFiles.length === 0 || !name) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await compressApi(selectedFiles, joinCwd(name));
@@ -38,6 +39,8 @@ export const CompressDialog = () => {
     if (res) {
       closeCompressDialog();
       refresh();
+    } else {
+      setError("Cannot compress item(s). Please try again.");
     }
 
     setLoading(false);

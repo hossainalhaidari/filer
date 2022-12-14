@@ -13,7 +13,7 @@ import { createApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const NewFolderDialog = () => {
-  const { loading, setLoading, newDir, refresh } = useAppContext();
+  const { loading, setLoading, newDir, refresh, setError } = useAppContext();
   const { newFolderDialog, closeNewFolderDialog } = useDialog();
   const [name, setName] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -21,6 +21,7 @@ export const NewFolderDialog = () => {
   const onCreate = async () => {
     if (!name) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await createApi(newDir(name));
@@ -28,6 +29,8 @@ export const NewFolderDialog = () => {
     if (res) {
       closeNewFolderDialog();
       refresh();
+    } else {
+      setError("Cannot create a new folder. Please try again.");
     }
 
     setLoading(false);

@@ -13,7 +13,7 @@ import { renameApi } from "~/api";
 import { useAppContext, useDialog } from "~/stores";
 
 export const RenameDialog = () => {
-  const { getFile, loading, setLoading, refresh } = useAppContext();
+  const { getFile, loading, setLoading, refresh, setError } = useAppContext();
   const { renameDialog, closeRenameDialog } = useDialog();
   const file = getFile();
   const [name, setName] = useState(file?.name);
@@ -22,6 +22,7 @@ export const RenameDialog = () => {
   const onRename = async () => {
     if (file == null || !name) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await renameApi(file, name);
@@ -29,6 +30,8 @@ export const RenameDialog = () => {
     if (res) {
       closeRenameDialog();
       refresh();
+    } else {
+      setError("Cannot rename item. Please try again.");
     }
 
     setLoading(false);

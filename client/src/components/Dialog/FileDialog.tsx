@@ -17,7 +17,7 @@ import { useAppContext, useDialog } from "~/stores";
 import { readApi, updateApi } from "~/api";
 
 export const FileDialog = () => {
-  const { getFile, loading, setLoading, refresh } = useAppContext();
+  const { getFile, loading, setLoading, refresh, setError } = useAppContext();
   const { fileDialog, closeFileDialog } = useDialog();
   const file = getFile();
   const [content, setContent] = useState("");
@@ -25,12 +25,16 @@ export const FileDialog = () => {
   const onSave = async () => {
     if (file == null) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await updateApi(file, content);
 
     if (res) {
+      closeFileDialog();
       refresh();
+    } else {
+      setError("Cannot save file. Please try again.");
     }
 
     setLoading(false);

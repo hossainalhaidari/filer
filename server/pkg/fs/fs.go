@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"log"
 	"mime/multipart"
 	"os"
 	"path/filepath"
@@ -14,7 +13,8 @@ import (
 func ReadDir(path string) []fs.DirEntry {
 	entries, err := os.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return []fs.DirEntry{}
 	}
 	return entries
 }
@@ -99,7 +99,7 @@ func ChangeMode(path string, modeStr string) bool {
 
 	err2 := os.Chmod(path, os.FileMode(mode))
 	if err2 != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return false
 	}
 

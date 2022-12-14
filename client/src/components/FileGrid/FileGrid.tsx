@@ -36,6 +36,7 @@ export const FileGrid = () => {
     loading,
     setLoading,
     refresh,
+    setError,
   } = useAppContext();
   const {
     openCompressDialog,
@@ -51,6 +52,7 @@ export const FileGrid = () => {
   const onPaste = async () => {
     if (clipboard.files.length === 0) return;
 
+    setError(null);
     setLoading(true);
 
     const res = clipboard.isCut
@@ -60,6 +62,8 @@ export const FileGrid = () => {
     if (res) {
       clearClipboard();
       refresh();
+    } else {
+      setError("Cannot paste item(s). Please try again.");
     }
 
     setLoading(false);
@@ -68,6 +72,7 @@ export const FileGrid = () => {
   const onUpload = async (files: FileList | null) => {
     if (!files) return;
 
+    setError(null);
     setLoading(true);
 
     const res = await uploadApi(files, cwd(), (event: AxiosProgressEvent) => {
@@ -76,6 +81,8 @@ export const FileGrid = () => {
 
     if (res) {
       refresh();
+    } else {
+      setError("Cannot upload files. Please try again.");
     }
 
     setLoading(false);
