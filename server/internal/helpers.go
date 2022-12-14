@@ -18,7 +18,7 @@ func SetBaseDir(baseDir string) {
 }
 
 func GenerateJwtKey() {
-	JwtKey = uniuri.NewLen(64)
+	JwtKey = uniuri.NewLen(uniuri.UUIDLen)
 }
 
 func joinPath(path string) string {

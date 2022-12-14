@@ -9,6 +9,10 @@ interface Dialog {
   openDeleteDialog: () => void;
   closeDeleteDialog: () => void;
 
+  detailsDialog: boolean;
+  openDetailsDialog: () => void;
+  closeDetailsDialog: () => void;
+
   extractDialog: boolean;
   openExtractDialog: () => void;
   closeExtractDialog: () => void;
@@ -44,6 +48,11 @@ export const useDialog = create<Dialog>((set) => ({
   deleteDialog: false,
   openDeleteDialog: () => set((state) => ({ ...state, deleteDialog: true })),
   closeDeleteDialog: () => set((state) => ({ ...state, deleteDialog: false })),
+
+  detailsDialog: false,
+  openDetailsDialog: () => set((state) => ({ ...state, detailsDialog: true })),
+  closeDetailsDialog: () =>
+    set((state) => ({ ...state, detailsDialog: false })),
 
   extractDialog: false,
   openExtractDialog: () => set((state) => ({ ...state, extractDialog: true })),

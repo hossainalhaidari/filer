@@ -16,7 +16,7 @@ import {
   FolderZip as ArchiveIcon,
   Image as ImageIcon,
   MusicNote as AudioIcon,
-  Shield as ModeIcon,
+  Info as DetailsIcon,
   Subject as TextIcon,
   Unarchive as UnarchiveIcon,
   Videocam as VideoIcon,
@@ -32,9 +32,9 @@ import { isArchive, mime, MimeType } from "~/utils/mimeType";
 export const useColumns = () => {
   const { paths, setPaths, setSelectedFiles, setLoading } = useAppContext();
   const {
+    openDetailsDialog,
     openExtractDialog,
     openFileDialog,
-    openModeDialog,
     openRenameDialog,
   } = useDialog();
 
@@ -137,11 +137,6 @@ export const useColumns = () => {
     },
     { field: "date", headerName: "Last Modified", width: 180 },
     {
-      field: "mode",
-      headerName: "Mode",
-      width: 100,
-    },
-    {
       field: "actions",
       headerName: "Actions",
       sortable: false,
@@ -153,14 +148,14 @@ export const useColumns = () => {
         return (
           <>
             <IconButton
-              aria-label="Change Mode"
+              aria-label="Details"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedFiles([file]);
-                openModeDialog();
+                openDetailsDialog();
               }}
             >
-              <ModeIcon />
+              <DetailsIcon />
             </IconButton>
             <IconButton
               aria-label="Rename"

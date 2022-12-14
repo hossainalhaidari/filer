@@ -10,11 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
+import { grey } from "@mui/material/colors";
 import { useEffect } from "react";
 
 import {
   CompressDialog,
   DeleteDialog,
+  DetailsDialog,
   ExtractDialog,
   FileDialog,
   ModeDialog,
@@ -26,7 +28,6 @@ import { useAppContext, useAuthContext } from "~/stores";
 import { FileGrid, PathBar } from "~/components";
 import { clearToken, getServer, getUser } from "~/utils/storage";
 import { AuthStatus } from "~/utils/types";
-import { grey } from "@mui/material/colors";
 
 export const FilesPage = () => {
   const { setAuthStatus } = useAuthContext();
@@ -89,6 +90,7 @@ export const FilesPage = () => {
 
         <CompressDialog />
         <DeleteDialog />
+        <DetailsDialog />
         <ExtractDialog />
         <FileDialog />
         <ModeDialog />

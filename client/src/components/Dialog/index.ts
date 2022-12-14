@@ -1,5 +1,6 @@
 export * from "./CompressDialog";
 export * from "./DeleteDialog";
+export * from "./DetailsDialog";
 export * from "./ExtractDialog";
 export * from "./FileDialog";
 export * from "./ModeDialog";
