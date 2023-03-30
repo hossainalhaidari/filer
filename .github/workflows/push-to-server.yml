@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./clients
+        working-directory: client
     strategy:
       matrix:
         node-version: [18]
