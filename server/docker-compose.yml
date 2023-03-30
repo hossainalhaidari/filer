@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  filer:
+    container_name: filer
+    image: hossainalhaidari/filer
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: ./.htpasswd
+        target: /app/.htpasswd
+      - type: bind
+        source: ./data
+        target: /app/data

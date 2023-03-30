@@ -7,7 +7,6 @@ import (
 	"github.com/hossainalhaidari/filer/internal"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
@@ -24,10 +23,7 @@ func main() {
 	internal.GenerateJwtKey()
 
 	e := echo.New()
-	e.AutoTLSManager.Cache = autocert.DirCache("cache")
-	e.Pre(middleware.HTTPSRedirect())
 	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
 
 	r := e.Group("/")
@@ -52,10 +48,5 @@ func main() {
 	r.POST("compress", internal.Compress)
 	r.POST("extract", internal.Extract)
 
-	port := "443"
-	if len(args) > 1 {
-		port = args[1]
-	}
-
-	e.Logger.Fatal(e.StartAutoTLS(":" + port))
+	e.Logger.Fatal(e.Start(":3000"))
 }
