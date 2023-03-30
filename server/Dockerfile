@@ -1,6 +1,6 @@
 FROM golang:alpine AS build
 WORKDIR /src
-COPY *.go go.* /src/
+COPY * /src/
 RUN go build -o /bin/filer ./cmd/filer
 
 FROM scratch

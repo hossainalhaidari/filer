@@ -8,9 +8,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./clients
     strategy:
       matrix:
         node-version: [18]
@@ -24,10 +21,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-    - name: Install dependencies
-      run: pnpm install
-    - name: Build app
-      run: pnpm build
+    - name: Install dependencies and build app
+      working-directory: ./client
+      run: |
+        pnpm install
+        pnpm build
     - name: Copy dist files via SCP
       uses: appleboy/scp-action@master
       with:
@@ -35,5 +33,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        source: "dist/*"
+        source: "client/dist/*"
         target: "~/htdocs/file.alhaidari.de/"
