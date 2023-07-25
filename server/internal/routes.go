@@ -1,9 +1,11 @@
 package internal
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -237,4 +239,51 @@ func Extract(c echo.Context) error {
 
 	result := fs.Unarchive(joinFilePath(req.File), joinPath(req.OutputPath))
 	return c.JSON(http.StatusOK, result)
+}
+
+func Search(c echo.Context) error {
+	req := new(SearchRequest)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest)
+	}
+
+	var files []File
+	var dirs []File
+	parentPath := joinPath(req.Path)
+
+	_ = filepath.Walk(parentPath, func(path string, entry os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		}
+
+		if path == parentPath {
+			return nil
+		}
+
+		if strings.Contains(entry.Name(), req.Query) {
+			fullPath := filepath.Join(path, entry.Name())
+			mimeType, _ := mimetype.DetectFile(fullPath)
+
+			f := File{
+				Name:  entry.Name(),
+				IsDir: entry.IsDir(),
+				Mime:  mimeType.String(),
+				Size:  entry.Size(),
+				Date:  entry.ModTime().Format("Jan 02, 2006 15:04:05"),
+				Mode:  entry.Mode().String(),
+				Path:  substring(path, len(BaseDir), len(path)-len(entry.Name())),
+			}
+
+			if entry.IsDir() {
+				dirs = append(dirs, f)
+			} else {
+				files = append(files, f)
+			}
+		}
+
+		return nil
+	})
+
+	return c.JSON(http.StatusOK, append(dirs, files...))
 }

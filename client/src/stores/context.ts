@@ -31,6 +31,9 @@ interface AppContext {
   setError: (error: string | null) => void;
   refresh: () => void;
 
+  search: string;
+  setSearch: (error: string) => void;
+
   newFile: (name?: string) => File;
   newDir: (name?: string) => File;
 }
@@ -64,6 +67,9 @@ export const useAppContext = create<AppContext>((set, get) => ({
 
   loading: false,
   setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
+
+  search: "",
+  setSearch: (search: string) => set((state) => ({ ...state, search })),
 
   refresh: () => {
     set((state) => ({ ...state, loading: true }));

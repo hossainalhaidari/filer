@@ -47,3 +47,6 @@ export const compressApi = async (files: File[], outputPath: string) =>
 
 export const extractApi = async (file: File, outputPath: string) =>
   await post("/extract", { file, outputPath });
+
+export const searchApi = async (path: string, query: string) =>
+  await post("/search", { path, query });

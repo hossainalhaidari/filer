@@ -77,3 +77,8 @@ type ExtractRequest struct {
 	File       File   `json:"file"`
 	OutputPath string `json:"outputPath"`
 }
+
+type SearchRequest struct {
+	Path  string `json:"path"`
+	Query string `json:"query"`
+}

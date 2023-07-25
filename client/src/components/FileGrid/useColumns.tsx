@@ -130,6 +130,11 @@ export const useColumns = () => {
       },
     },
     {
+      field: "path",
+      headerName: "Path",
+      flex: 1,
+    },
+    {
       field: "size",
       headerName: "Size",
       valueFormatter: ({ value }) => fileSize(value),

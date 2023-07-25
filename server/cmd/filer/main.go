@@ -47,6 +47,7 @@ func main() {
 	r.POST("upload", internal.Upload)
 	r.POST("compress", internal.Compress)
 	r.POST("extract", internal.Extract)
+	r.POST("search", internal.Search)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }

@@ -1,4 +1,4 @@
-import { IconButton, Divider, LinearProgress } from "@mui/material";
+import { IconButton, Divider, LinearProgress, TextField } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import {
   Archive as ArchiveIcon,
@@ -18,7 +18,7 @@ import { AxiosProgressEvent } from "axios";
 
 import { useColumns } from "./useColumns";
 
-import { copyApi, moveApi, uploadApi } from "~/api";
+import { copyApi, moveApi, searchApi, uploadApi } from "~/api";
 import { File } from "~/utils/types";
 import { useAppContext, useDialog } from "~/stores";
 
@@ -28,6 +28,7 @@ export const FileGrid = () => {
     setPaths,
     cwd,
     files,
+    setFiles,
     clipboard,
     setClipboard,
     clearClipboard,
@@ -35,6 +36,8 @@ export const FileGrid = () => {
     setSelectedFiles,
     loading,
     setLoading,
+    search,
+    setSearch,
     refresh,
     setError,
   } = useAppContext();
@@ -88,11 +91,37 @@ export const FileGrid = () => {
     setLoading(false);
   };
 
+  const onSearch = async (query: string) => {
+    setSearch(query);
+
+    if (query.trim() === "") {
+      refresh();
+      return;
+    }
+
+    setError(null);
+    setLoading(true);
+
+    const res = await searchApi(cwd(), query.trim());
+
+    if (res) {
+      setFiles(res);
+    } else {
+      setError("Cannot search files. Please try again.");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div style={{ height: 600, width: "100%", marginTop: 10 }}>
       <DataGrid
         rows={files}
         columns={columns}
+        columnVisibilityModel={{
+          date: search === "",
+          path: search !== "",
+        }}
         loading={loading}
         pageSize={30}
         getRowId={(row: File) => row.name}
@@ -191,6 +220,13 @@ export const FileGrid = () => {
               >
                 <PasteIcon />
               </IconButton>
+              <TextField
+                label="Search..."
+                type="text"
+                size="small"
+                value={search}
+                onChange={(e) => onSearch(e.target.value)}
+              />
             </GridToolbarContainer>
           ),
         }}
